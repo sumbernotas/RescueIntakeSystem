@@ -74,40 +74,94 @@ public abstract class RescueAnimal implements Comparable<RescueAnimal> {
 
     //////
     /// getters and setters
-    /// TODO: add validation
     //////
     
     public int getAnimalID() {return animalID;}
     
     public String getName() {return name;}
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
+        this.name = name.trim();
+    }
 
     public String getAnimalType() {return animalType;}
-    public void setAnimalType(String animalType) {this.animalType = animalType;}
+    public void setAnimalType(String animalType) {
+        if (animalType == null || animalType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Animal type cannot be blank");
+        }
+        this.animalType = animalType.trim();
+    }
 
     public String getGender() {return gender;}
-    public void setGender(String gender) {this.gender = gender;}
+    public void setGender(String gender) {
+        if (gender == null || gender.trim().isEmpty()) {
+            throw new IllegalArgumentException("Gender cannot be blank");
+        }
+
+        String normalizedGender = gender.trim().toLowerCase();
+
+        if (!normalizedGender.equals("male") && !normalizedGender.equals("female") 
+            && !normalizedGender.equals("unknown")) {
+            throw new IllegalArgumentException("Gender must be 'male', 'female', or 'unknown'");
+        }
+        this.gender = normalizedGender;
+    }
 
     public int getAge() {return age;}
-    public void setAge(int age) {this.age = age;}
+    public void setAge(int age) {
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+        this.age = age;
+    }
 
     public double getWeight() {return weight;}
-    public void setWeight(double weight) {this.weight = weight;}
+    public void setWeight(double weight) {
+        if (weight <= 0) {
+            throw new IllegalArgumentException("Weight must be positive");
+        }
+        this.weight = weight;
+    }
 
     public LocalDate getAcquisitionDate() {return acquisitionDate;}
-    public void setAcquisitionDate(LocalDate date) {this.acquisitionDate = date;}
+    public void setAcquisitionDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Acquisition date cannot be null");
+        }
+        if (date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Acquisition date cannot be in the future");
+        }
+        this.acquisitionDate = date;
+    }
 
     public String getAcquisitionCountry() {return acquisitionCountry;}
-    public void setAcquisitionCountry(String country) {this.acquisitionCountry = country;}
+    public void setAcquisitionCountry(String country) {
+        if (country == null || country.trim().isEmpty()) {
+            throw new IllegalArgumentException("Acquisition country cannot be blank");
+        }
+        this.acquisitionCountry = country.trim();
+    }
 
     public TrainingStatus getTrainingStatus() {return trainingStatus;}
-    public void setTrainingStatus(TrainingStatus status) {this.trainingStatus = status;}
+    public void setTrainingStatus(TrainingStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Training status cannot be null");
+        }
+        this.trainingStatus = status;
+    }
 
     public boolean isReserved() {return reserved;}
     public void setReserved(boolean reserved) {this.reserved = reserved;}
 
     public String getInServiceCountry() {return inServiceCountry;}
-    public void setInServiceCountry(String country) {this.inServiceCountry = country;}
+    public void setInServiceCountry(String country) {
+        if (country == null || country.trim().isEmpty()) {
+            throw new IllegalArgumentException("In-service country cannot be blank");
+        }
+        this.inServiceCountry = country.trim();
+    }
 
     public boolean isAvailable() {
         return trainingStatus == TrainingStatus.IN_SERVICE && !reserved;
@@ -127,5 +181,11 @@ public abstract class RescueAnimal implements Comparable<RescueAnimal> {
     public String formattedAcquisitionDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
         return acquisitionDate.format(formatter);
+    }
+
+    // allows for sorting animals by name
+    @Override
+    public int compareTo(RescueAnimal other) {
+        return this.name.compareToIgnoreCase(other.name);
     }
 }
