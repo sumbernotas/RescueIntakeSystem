@@ -128,4 +128,10 @@ public class Monkey extends RescueAnimal {
             throw new IllegalArgumentException("Invalid " + fieldName + " format: " + valueStr);
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s, Species: %s, Tail: %.1f\", Height: %.1f\", Body: %.1f\"",
+                        super.toString(), species, tailLength, height, bodyLength);
+    }
 }

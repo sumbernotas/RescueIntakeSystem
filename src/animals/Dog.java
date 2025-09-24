@@ -88,4 +88,8 @@ public class Dog extends RescueAnimal {
         }
     }
     
+    @Override
+    public String toString() {
+        return String.format("%s, Breed: %s", super.toString(), breed);
+    }
 }

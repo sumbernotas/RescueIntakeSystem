@@ -188,4 +188,12 @@ public abstract class RescueAnimal implements Comparable<RescueAnimal> {
     public int compareTo(RescueAnimal other) {
         return this.name.compareToIgnoreCase(other.name);
     }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d, Name: %s, Type: %s, Gender: %s, Age: %d, " +
+                        "Weight: %.1f lbs, Status: %s, Reserved: %s",
+                        animalID, name, animalType, gender, age, weight,
+                        trainingStatus.getDisplayName(), reserved ? "Yes" : "No");
+    }
 }

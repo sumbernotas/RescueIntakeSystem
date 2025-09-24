@@ -139,4 +139,11 @@ public class Cat extends RescueAnimal {
                                              ". Use true/false, yes/no, or 1/0");
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s, Breed: %s, Coat: %s, Indoor Only: %s, Declawed: %s",
+                        super.toString(), breed, coatLength, 
+                        isIndoorOnly ? "Yes" : "No", isDeclawed ? "Yes" : "No");
+    }
 }

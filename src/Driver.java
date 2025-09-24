@@ -1,28 +1,21 @@
 import animals.*;
-import java.util.ArrayList;
+import datastructures.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Driver {
-    
-    // Animal storage lists (will be replaced with binary trees later)
-    private static ArrayList<Dog> dogList = new ArrayList<>();
-    private static ArrayList<Monkey> monkeyList = new ArrayList<>();
-    private static ArrayList<Cat> catList = new ArrayList<>();
-    private static ArrayList<Bird> birdList = new ArrayList<>();
+    private static AnimalTreeManager treeManager = new AnimalTreeManager();
     
 
-    public static void main(String[] args) {
-        // Initialize with sample data
-        initializeDogList();
-        initializeMonkeyList();
-        initializeCatList();
-        initializeBirdList();
-        
+    public static void main(String[] args) {        
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
         
         System.out.println("=== WELCOME TO THE ENHANCED RESCUE ANIMAL SYSTEM ===");
         System.out.println("Supports Dogs, Monkeys, Cats, and Birds!");
+
+        treeManager.initializeWithSampleData();
+        System.out.println(treeManager.getPerformanceInfo());
         
         // Main application loop
         while (!userInput.equals("q")) {
@@ -66,6 +59,10 @@ public class Driver {
                 case "12":
                     printSystemStatistics();
                     break;
+                case "13":
+                    searchByName(scanner);
+                    break;
+                    
                 case "q":
                     System.out.println("Thank you for using the Rescue Animal System!");
                     break;
@@ -79,9 +76,9 @@ public class Driver {
     
     // displays main menu
     public static void displayMenu() {
-        System.out.println("\n" + "=".repeat(60));
+        System.out.println("\n" + "=".repeat(70));
         System.out.println("\t\tRESCUE ANIMAL SYSTEM MENU");
-        System.out.println("=".repeat(60));
+        System.out.println("=".repeat(70));
         System.out.println("INTAKE OPTIONS:");
         System.out.println("[1] Intake a new dog");
         System.out.println("[2] Intake a new monkey");
@@ -96,92 +93,12 @@ public class Driver {
         System.out.println("[9] Print all birds");
         System.out.println("[10] Print all available animals");
         System.out.println("\nSEARCH OPTIONS:");
-        System.out.println("[11] Search animals (enhanced)");
-        System.out.println("[12] System statistics");
+        System.out.println("[11] Multi-criteria search");
+        System.out.println("[12] System statistics & tree analysis");
+        System.out.println("[13] Name search");
         System.out.println("\n[q] Quit application");
-        System.out.println("=".repeat(60));
+        System.out.println("=".repeat(70));
         System.out.print("Enter your choice: ");
-    }
-    
-    // uses sample data to initialize dog list
-    public static void initializeDogList() {
-        try {
-            Dog dog1 = new Dog("Spot", "German Shepherd", "male", "1", "25.6", 
-                              "05-12-2019", "United States", "intake", false, "United States");
-            Dog dog2 = new Dog("Rex", "Great Dane", "male", "3", "35.2", 
-                              "02-03-2020", "United States", "Phase I", false, "United States");
-            Dog dog3 = new Dog("Bella", "Chihuahua", "female", "4", "8.5", 
-                              "12-12-2019", "Canada", "in service", true, "Canada");
-            
-            dogList.add(dog1);
-            dogList.add(dog2);
-            dogList.add(dog3);
-            
-            System.out.println("Initialized " + dogList.size() + " dogs.");
-        } catch (Exception e) {
-            System.out.println("Error initializing dogs: " + e.getMessage());
-        }
-    }
-    
-    // uses sample data to initialize monkey list
-    public static void initializeMonkeyList() {
-        try {
-            Monkey monkey1 = new Monkey("Bingo", "male", "3", "40.0", "09-21-2018", 
-                                       "Australia", "intake", false, "United States", 
-                                       "2.3", "6.0", "4.2", "Tamarin");
-            Monkey monkey2 = new Monkey("Layla", "female", "2", "38.0", "01-15-2018", 
-                                       "Brazil", "Phase I", true, "United States", 
-                                       "2.5", "6.3", "4.0", "Capuchin");
-            Monkey monkey3 = new Monkey("Nanas", "male", "3", "41.0", "10-21-2019", 
-                                       "Africa", "intake", false, "United States", 
-                                       "2.0", "5.2", "3.5", "Guenon");
-            
-            monkeyList.add(monkey1);
-            monkeyList.add(monkey2);
-            monkeyList.add(monkey3);
-            
-            System.out.println("Initialized " + monkeyList.size() + " monkeys.");
-        } catch (Exception e) {
-            System.out.println("Error initializing monkeys: " + e.getMessage());
-        }
-    }
-    
-    // uses sample data to initialize cat list
-    public static void initializeCatList() {
-        try {
-            Cat cat1 = new Cat("Whiskers", "Domestic Shorthair", "female", "2", "8.5", 
-                              "03-15-2020", "United States", "in service", false, "United States",
-                              "true", "false", "short");
-            Cat cat2 = new Cat("Shadow", "Persian", "male", "4", "12.3", 
-                              "07-22-2019", "Canada", "Phase II", false, "Canada",
-                              "true", "false", "long");
-            
-            catList.add(cat1);
-            catList.add(cat2);
-            
-            System.out.println("Initialized " + catList.size() + " cats.");
-        } catch (Exception e) {
-            System.out.println("Error initializing cats: " + e.getMessage());
-        }
-    }
-    
-    // uses sample data to initialize bird list
-    public static void initializeBirdList() {
-        try {
-            Bird bird1 = new Bird("Phoenix", "Parrot", "female", "3", "2.1", 
-                                 "04-10-2020", "Australia", "Phase I", false, "United States",
-                                 "18.5", "true", "hooked", "false");
-            Bird bird2 = new Bird("Eagle Eye", "Falcon", "male", "2", "3.2", 
-                                 "06-05-2021", "Canada", "in service", false, "Canada",
-                                 "32.0", "true", "hooked", "true");
-            
-            birdList.add(bird1);
-            birdList.add(bird2);
-            
-            System.out.println("Initialized " + birdList.size() + " birds.");
-        } catch (Exception e) {
-            System.out.println("Error initializing birds: " + e.getMessage());
-        }
     }
     
     // dog intake with updated validation
@@ -192,12 +109,10 @@ public class Driver {
             System.out.print("Dog's name: ");
             String name = scanner.nextLine().trim();
             
-            // Check for duplicates
-            for (Dog dog : dogList) {
-                if (dog.getName().equalsIgnoreCase(name)) {
-                    System.out.println("A dog with this name already exists in our system.");
-                    return;
-                }
+            // duplicate check
+            if (treeManager.animalNameExists(name)) {
+                System.out.println("A dog with this name already exists in our system");
+                return;
             }
             
             System.out.print("Breed: ");
@@ -230,8 +145,12 @@ public class Driver {
             Dog newDog = new Dog(name, breed, gender, age, weight, acquisitionDate,
                                acquisitionCountry, trainingStatus, reserved, inServiceCountry);
             
-            dogList.add(newDog);
-            System.out.println("Successfully added new dog: " + name);
+            // insertion into binary search tree
+            if (treeManager.addDog(newDog)) {
+                System.out.println("Successfully added new dog: " + name);
+            } else {
+                System.out.println("Failed to add dog. Name may already exist.");
+            }
             
         } catch (Exception e) {
             System.out.println("Error adding dog: " + e.getMessage());
@@ -246,12 +165,10 @@ public class Driver {
             System.out.print("Monkey's name: ");
             String name = scanner.nextLine().trim();
             
-            // Check for duplicates
-            for (Monkey monkey : monkeyList) {
-                if (monkey.getName().equalsIgnoreCase(name)) {
-                    System.out.println("A monkey with this name already exists in our system.");
-                    return;
-                }
+            // duplicate check
+            if (treeManager.animalNameExists(name)) {
+                System.out.println("A monkey with this name already exists in our system.");
+                return;
             }
             
             System.out.print("Gender (male/female/unknown): ");
@@ -294,8 +211,11 @@ public class Driver {
                                         acquisitionCountry, trainingStatus, reserved, 
                                         inServiceCountry, tailLength, height, bodyLength, species);
             
-            monkeyList.add(newMonkey);
-            System.out.println("Successfully added new monkey: " + name);
+            if (treeManager.addMonkey(newMonkey)) {
+                System.out.println("Successfully added new monkey: " + name);
+            } else {
+                System.out.println("Failed to add monkey. Name may already exist.");
+            }
             
         } catch (Exception e) {
             System.out.println("Error adding monkey: " + e.getMessage());
@@ -310,12 +230,9 @@ public class Driver {
             System.out.print("Cat's name: ");
             String name = scanner.nextLine().trim();
             
-            // Check for duplicates
-            for (Cat cat : catList) {
-                if (cat.getName().equalsIgnoreCase(name)) {
-                    System.out.println("A cat with this name already exists in our system.");
-                    return;
-                }
+            if (treeManager.animalNameExists(name)) {
+                System.out.println("A cat with this name already exists in our system.");
+                return;
             }
             
             System.out.print("Breed: ");
@@ -358,8 +275,11 @@ public class Driver {
                                acquisitionCountry, trainingStatus, reserved, inServiceCountry,
                                isIndoorOnly, isDeclawed, coatLength);
             
-            catList.add(newCat);
-            System.out.println("Successfully added new cat: " + name);
+            if (treeManager.addCat(newCat)) {
+                System.out.println("Successfully added new cat: " + name);
+            } else {
+                System.out.println("Failed to add cat. Name may already exist.");
+            }
             
         } catch (Exception e) {
             System.out.println("Error adding cat: " + e.getMessage());
@@ -374,12 +294,9 @@ public class Driver {
             System.out.print("Bird's name: ");
             String name = scanner.nextLine().trim();
             
-            // Check for duplicates across all birds
-            for (Bird bird : birdList) {
-                if (bird.getName().equalsIgnoreCase(name)) {
-                    System.out.println("A bird with this name already exists in our system.");
-                    return;
-                }
+            if (treeManager.animalNameExists(name)) {
+                System.out.println("A bird with this name already exists in our system.");
+                return;
             }
             
             System.out.print("Species: ");
@@ -425,8 +342,11 @@ public class Driver {
                                   acquisitionCountry, trainingStatus, reserved, inServiceCountry,
                                   wingspan, canFly, beakType, isMigratory);
             
-            birdList.add(newBird);
-            System.out.println("Successfully added new bird: " + name);
+            if (treeManager.addBird(newBird)) {
+                System.out.println("Successfully added new bird: " + name);
+            } else {
+                System.out.println("Failed to add bird. Name may already exist.");
+            }
             
         } catch (Exception e) {
             System.out.println("Error adding bird: " + e.getMessage());
@@ -443,138 +363,86 @@ public class Driver {
         System.out.print("Service country: ");
         String serviceCountry = scanner.nextLine().trim();
         
-        boolean found = false;
+        RescueAnimal reservedAnimal = treeManager.reserveAnimal(animalType, serviceCountry);
         
-        switch (animalType) {
-            case "dog":
-                for (Dog dog : dogList) {
-                    if (dog.getInServiceCountry().equalsIgnoreCase(serviceCountry) && !dog.isReserved()) {
-                        dog.setReserved(true);
-                        System.out.println("Reserved dog: " + dog.getName());
-                        found = true;
-                        break;
-                    }
-                }
-                break;
-            case "monkey":
-                for (Monkey monkey : monkeyList) {
-                    if (monkey.getInServiceCountry().equalsIgnoreCase(serviceCountry) && !monkey.isReserved()) {
-                        monkey.setReserved(true);
-                        System.out.println("Reserved monkey: " + monkey.getName());
-                        found = true;
-                        break;
-                    }
-                }
-                break;
-            case "cat":
-                for (Cat cat : catList) {
-                    if (cat.getInServiceCountry().equalsIgnoreCase(serviceCountry) && !cat.isReserved()) {
-                        cat.setReserved(true);
-                        System.out.println("Reserved cat: " + cat.getName());
-                        found = true;
-                        break;
-                    }
-                }
-                break;
-            case "bird":
-                for (Bird bird : birdList) {
-                    if (bird.getInServiceCountry().equalsIgnoreCase(serviceCountry) && !bird.isReserved()) {
-                        bird.setReserved(true);
-                        System.out.println("Reserved bird: " + bird.getName());
-                        found = true;
-                        break;
-                    }
-                }
-                break;
-            default:
-                System.out.println("Invalid animal type.");
-                return;
-        }
-        
-        if (!found) {
+        if (reservedAnimal != null) {
+            System.out.println("Successfully reserved " + animalType + ": " + reservedAnimal.getName());
+        } else {
             System.out.println("No available " + animalType + " found in " + serviceCountry);
         }
     }
     
-    // to print all animals information
+    // to print all animals information, sorted
     public static void printAnimals(String listType) {
         System.out.println("\n=== " + listType.toUpperCase() + " LIST ===");
         
         switch (listType.toLowerCase()) {
             case "dog":
-                if (dogList.isEmpty()) {
+                List<? extends RescueAnimal> dogs = treeManager.getAnimalsByType("dog");
+                
+                if (dogs.isEmpty()) {
                     System.out.println("No dogs in the system.");
                 } else {
-                    for (Dog dog : dogList) {
-                        System.out.println(dog.toString());
+                    System.out.println("Dogs sorted alphabetically:");
+                    for (RescueAnimal dog : dogs) {
+                        System.out.println("  " + dog.toString());
                     }
                 }
+
                 break;
                 
             case "monkey":
-                if (monkeyList.isEmpty()) {
+                List<? extends RescueAnimal> monkeys = treeManager.getAnimalsByType("monkey");
+                
+                if (monkeys.isEmpty()) {
                     System.out.println("No monkeys in the system.");
                 } else {
-                    for (Monkey monkey : monkeyList) {
-                        System.out.println(monkey.toString());
+                    System.out.println("Monkeys sorted alphabetically:");
+                    for (RescueAnimal monkey : monkeys) {
+                        System.out.println("  " + monkey.toString());
                     }
                 }
+
                 break;
                 
             case "cat":
-                if (catList.isEmpty()) {
+                List<? extends RescueAnimal> cats = treeManager.getAnimalsByType("cat");
+                
+                if (cats.isEmpty()) {
                     System.out.println("No cats in the system.");
                 } else {
-                    for (Cat cat : catList) {
-                        System.out.println(cat.toString());
+                    System.out.println("Cats sorted alphabetically:");
+                    for (RescueAnimal cat : cats) {
+                        System.out.println("  " + cat.toString());
                     }
                 }
+
                 break;
                 
             case "bird":
-                if (birdList.isEmpty()) {
+                List<? extends RescueAnimal> birds = treeManager.getAnimalsByType("bird");
+                
+                if (birds.isEmpty()) {
                     System.out.println("No birds in the system.");
                 } else {
-                    for (Bird bird : birdList) {
-                        System.out.println(bird.toString());
+                    System.out.println("Birds sorted alphabetically:");
+                    for (RescueAnimal bird : birds) {
+                        System.out.println("  " + bird.toString());
                     }
                 }
+
                 break;
                 
             case "available":
-                System.out.println("Available Animals (In Service & Not Reserved):");
-                boolean foundAny = false;
-                
-                for (Dog dog : dogList) {
-                    if (dog.isAvailable()) {
-                        System.out.println("DOG: " + dog.toString());
-                        foundAny = true;
-                    }
-                }
-                
-                for (Monkey monkey : monkeyList) {
-                    if (monkey.isAvailable()) {
-                        System.out.println("MONKEY: " + monkey.toString());
-                        foundAny = true;
-                    }
-                }
-                
-                for (Cat cat : catList) {
-                    if (cat.isAvailable()) {
-                        System.out.println("CAT: " + cat.toString());
-                        foundAny = true;
-                    }
-                }
-                
-                for (Bird bird : birdList) {
-                    if (bird.isAvailable()) {
-                        System.out.println("BIRD: " + bird.toString());
-                        foundAny = true;
-                    }
-                }
-                
-                if (!foundAny) {
+                List<RescueAnimal> available = treeManager.getAllAvailableAnimals();
+                if (available.isEmpty()) {
                     System.out.println("No animals are currently available for service.");
+                } else {
+                    System.out.println("🌳 Available Animals (In Service & Not Reserved):");
+                    System.out.println("Found using efficient tree traversal across all animal types:");
+                    for (RescueAnimal animal : available) {
+                        System.out.println("  " + animal.getAnimalType().toUpperCase() + ": " + animal.toString());
+                    }
                 }
                 break;
                 
@@ -586,25 +454,21 @@ public class Driver {
     // allows for search by specific criteria
     public static void searchAnimals(Scanner scanner) {
         System.out.println("\n=== ENHANCED ANIMAL SEARCH ===");
-        System.out.println("1. Search by name");
-        System.out.println("2. Search by training status");
-        System.out.println("3. Search by country");
-        System.out.println("4. Search by age range");
+        System.out.println("1. Search by training status");
+        System.out.println("2. Search by country");
+        System.out.println("3. Search by age range");
         System.out.print("Select search type: ");
         
         String searchType = scanner.nextLine().trim();
         
         switch (searchType) {
             case "1":
-                searchByName(scanner);
-                break;
-            case "2":
                 searchByTrainingStatus(scanner);
                 break;
-            case "3":
+            case "2":
                 searchByCountry(scanner);
                 break;
-            case "4":
+            case "3":
                 searchByAgeRange(scanner);
                 break;
             default:
@@ -614,41 +478,33 @@ public class Driver {
     
     // searches animal by name
     private static void searchByName(Scanner scanner) {
-        System.out.print("Enter name to search: ");
-        String searchName = scanner.nextLine().trim();
-        boolean found = false;
+        System.out.print("Enter animal name to search: ");
+        String name = scanner.nextLine().trim();
         
-        // Search all animal types
-        for (Dog dog : dogList) {
-            if (dog.getName().toLowerCase().contains(searchName.toLowerCase())) {
-                System.out.println("DOG FOUND: " + dog.toString());
-                found = true;
+        long startTime = System.nanoTime();
+        RescueAnimal found = treeManager.searchAnimalByName(name);
+        long endTime = System.nanoTime();
+        
+        double searchTimeMs = (endTime - startTime) / 1_000_000.0;
+        
+        if (found != null) {
+            System.out.println("FOUND in " + String.format("%.3f", searchTimeMs) + " milliseconds!");
+            System.out.println();
+            System.out.println("Animal Details:");
+            System.out.println("  " + found.toString());
+            
+            // Show detailed info if available
+            if (found instanceof Dog) {
+                System.out.println(((Dog) found).getDetailedInfo());
+            } else if (found instanceof Cat) {
+                System.out.println(((Cat) found).getDetailedInfo());
+            } else if (found instanceof Bird) {
+                System.out.println(((Bird) found).getDetailedInfo());
+            } else if (found instanceof Monkey) {
+                System.out.println(((Monkey) found).getDetailedInfo());
             }
-        }
-        
-        for (Monkey monkey : monkeyList) {
-            if (monkey.getName().toLowerCase().contains(searchName.toLowerCase())) {
-                System.out.println("MONKEY FOUND: " + monkey.toString());
-                found = true;
-            }
-        }
-        
-        for (Cat cat : catList) {
-            if (cat.getName().toLowerCase().contains(searchName.toLowerCase())) {
-                System.out.println("CAT FOUND: " + cat.toString());
-                found = true;
-            }
-        }
-        
-        for (Bird bird : birdList) {
-            if (bird.getName().toLowerCase().contains(searchName.toLowerCase())) {
-                System.out.println("BIRD FOUND: " + bird.toString());
-                found = true;
-            }
-        }
-        
-        if (!found) {
-            System.out.println("No animals found with name containing: " + searchName);
+        } else {
+            System.out.println("Animal not found");
         }
     }
     
@@ -656,39 +512,21 @@ public class Driver {
     private static void searchByTrainingStatus(Scanner scanner) {
         System.out.print("Enter training status (intake/Phase I/Phase II/Phase III/in service/retired): ");
         String status = scanner.nextLine().trim();
-        boolean found = false;
         
-        // Search all animal types
-        for (Dog dog : dogList) {
-            if (dog.getTrainingStatus().getDisplayName().equalsIgnoreCase(status)) {
-                System.out.println("DOG: " + dog.toString());
-                found = true;
+        try {
+            RescueAnimal.TrainingStatus trainingStatus = RescueAnimal.TrainingStatus.fromString(status);
+            List<RescueAnimal> results = treeManager.searchByTrainingStatus(trainingStatus);
+            
+            if (results.isEmpty()) {
+                System.out.println("No animals found with training status: " + status);
+            } else {
+                System.out.println("Found " + results.size() + " animal(s) with training status: " + status);
+                for (RescueAnimal animal : results) {
+                    System.out.println("  " + animal.getAnimalType().toUpperCase() + ": " + animal.toString());
+                }
             }
-        }
-        
-        for (Monkey monkey : monkeyList) {
-            if (monkey.getTrainingStatus().getDisplayName().equalsIgnoreCase(status)) {
-                System.out.println("MONKEY: " + monkey.toString());
-                found = true;
-            }
-        }
-        
-        for (Cat cat : catList) {
-            if (cat.getTrainingStatus().getDisplayName().equalsIgnoreCase(status)) {
-                System.out.println("CAT: " + cat.toString());
-                found = true;
-            }
-        }
-        
-        for (Bird bird : birdList) {
-            if (bird.getTrainingStatus().getDisplayName().equalsIgnoreCase(status)) {
-                System.out.println("BIRD: " + bird.toString());
-                found = true;
-            }
-        }
-        
-        if (!found) {
-            System.out.println("No animals found with training status: " + status);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid training status: " + status);
         }
     }
     
@@ -696,45 +534,16 @@ public class Driver {
     private static void searchByCountry(Scanner scanner) {
         System.out.print("Enter country: ");
         String country = scanner.nextLine().trim();
-        boolean found = false;
         
-        System.out.println("Animals from " + country + ":");
+        List<RescueAnimal> results = treeManager.searchByCountry(country);
         
-        // Search all animal types
-        for (Dog dog : dogList) {
-            if (dog.getAcquisitionCountry().equalsIgnoreCase(country) || 
-                dog.getInServiceCountry().equalsIgnoreCase(country)) {
-                System.out.println("DOG: " + dog.toString());
-                found = true;
-            }
-        }
-        
-        for (Monkey monkey : monkeyList) {
-            if (monkey.getAcquisitionCountry().equalsIgnoreCase(country) || 
-                monkey.getInServiceCountry().equalsIgnoreCase(country)) {
-                System.out.println("MONKEY: " + monkey.toString());
-                found = true;
-            }
-        }
-        
-        for (Cat cat : catList) {
-            if (cat.getAcquisitionCountry().equalsIgnoreCase(country) || 
-                cat.getInServiceCountry().equalsIgnoreCase(country)) {
-                System.out.println("CAT: " + cat.toString());
-                found = true;
-            }
-        }
-        
-        for (Bird bird : birdList) {
-            if (bird.getAcquisitionCountry().equalsIgnoreCase(country) || 
-                bird.getInServiceCountry().equalsIgnoreCase(country)) {
-                System.out.println("BIRD: " + bird.toString());
-                found = true;
-            }
-        }
-        
-        if (!found) {
+        if (results.isEmpty()) {
             System.out.println("No animals found from country: " + country);
+        } else {
+            System.out.println("Found " + results.size() + " animal(s) from " + country + ":");
+            for (RescueAnimal animal : results) {
+                System.out.println("  " + animal.getAnimalType().toUpperCase() + ": " + animal.toString());
+            }
         }
     }
     
@@ -747,94 +556,25 @@ public class Driver {
             System.out.print("Enter maximum age: ");
             int maxAge = Integer.parseInt(scanner.nextLine().trim());
             
-            boolean found = false;
+            List<RescueAnimal> results = treeManager.searchByAgeRange(minAge, maxAge);
             
-            System.out.println("Animals aged " + minAge + " to " + maxAge + " years:");
-            
-            // Search all animal types
-            for (Dog dog : dogList) {
-                if (dog.getAge() >= minAge && dog.getAge() <= maxAge) {
-                    System.out.println("DOG: " + dog.toString());
-                    found = true;
+            if (results.isEmpty()) {
+                System.out.println("No animals found in age range: " + minAge + " to " + maxAge + " years");
+            } else {
+                System.out.println("Found " + results.size() + " animal(s) aged " + minAge + " to " + maxAge + " years:");
+                for (RescueAnimal animal : results) {
+                    System.out.println("  " + animal.getAnimalType().toUpperCase() + ": " + animal.toString());
                 }
-            }
-            
-            for (Monkey monkey : monkeyList) {
-                if (monkey.getAge() >= minAge && monkey.getAge() <= maxAge) {
-                    System.out.println("MONKEY: " + monkey.toString());
-                    found = true;
-                }
-            }
-            
-            for (Cat cat : catList) {
-                if (cat.getAge() >= minAge && cat.getAge() <= maxAge) {
-                    System.out.println("CAT: " + cat.toString());
-                    found = true;
-                }
-            }
-            
-            for (Bird bird : birdList) {
-                if (bird.getAge() >= minAge && bird.getAge() <= maxAge) {
-                    System.out.println("BIRD: " + bird.toString());
-                    found = true;
-                }
-            }
-            
-            if (!found) {
-                System.out.println("No animals found in age range: " + minAge + " to " + maxAge);
             }
             
         } catch (NumberFormatException e) {
-            System.out.println("Invalid age format. Please enter valid numbers.");
+            System.out.println("Invalid age format. Please enter valid numbers");
         }
     }
 
     // prints statistics and information
     public static void printSystemStatistics() {
-        System.out.println("\n=== SYSTEM STATISTICS ===");
-        System.out.println("Dogs: " + dogList.size());
-        System.out.println("Monkeys: " + monkeyList.size());
-        System.out.println("Cats: " + catList.size());
-        System.out.println("Birds: " + birdList.size());
-        System.out.println("Total Animals: " + (dogList.size() + monkeyList.size() + catList.size() + birdList.size()));
-        
-        // Count available animals
-        int availableCount = 0;
-        for (Dog dog : dogList) {
-            if (dog.isAvailable()) availableCount++;
-        }
-        for (Monkey monkey : monkeyList) {
-            if (monkey.isAvailable()) availableCount++;
-        }
-        for (Cat cat : catList) {
-            if (cat.isAvailable()) availableCount++;
-        }
-        for (Bird bird : birdList) {
-            if (bird.isAvailable()) availableCount++;
-        }
-        
-        System.out.println("Available for Service: " + availableCount);
-        
-        // Training status breakdown
-        System.out.println("\nTraining Status Breakdown:");
-        for (RescueAnimal.TrainingStatus status : RescueAnimal.TrainingStatus.values()) {
-            int count = 0;
-            
-            for (Dog dog : dogList) {
-                if (dog.getTrainingStatus() == status) count++;
-            }
-            for (Monkey monkey : monkeyList) {
-                if (monkey.getTrainingStatus() == status) count++;
-            }
-            for (Cat cat : catList) {
-                if (cat.getTrainingStatus() == status) count++;
-            }
-            for (Bird bird : birdList) {
-                if (bird.getTrainingStatus() == status) count++;
-            }
-            
-            System.out.println("  " + status.getDisplayName() + ": " + count);
-        }
+        System.out.println(treeManager.getSystemStatistics());
     }
 }
 

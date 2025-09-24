@@ -172,4 +172,10 @@ public class Bird extends RescueAnimal {
                                              ". Use true/false, yes/no, or 1/0");
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s, Species: %s, Wingspan: %.1f\", Can Fly: %s, Beak: %s",
+                        super.toString(), species, wingspan, canFly ? "Yes" : "No", beakType);
+    }
 }
